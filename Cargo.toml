@@ -1,0 +1,15 @@
+[package]
+name = "simple-open-ai"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dotenv = "0.15.0"
+reqwest = { version = "0.11.22", features = ["json", "multipart"] }
+tokio = { version = "1.33.0", features = ["full"] }
+strum = "0.25.0"
+strum_macros = "0.25.3"
+serde = { version = "1.0.192", features = ["derive"] }
+bytes = "1.5.0"
