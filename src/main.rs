@@ -1,16 +1,16 @@
-use std::io;
+mod error;
+mod stt;
+mod tts;
 
 use error::ApiError;
-use stt::get_text;
+use std::io;
+use stt::get_text_from_voice;
 use tokio::{
     fs::File,
     io::{AsyncReadExt, AsyncWriteExt},
 };
 use tts::{get_voice_from_text, Request, Voice};
 
-mod error;
-mod stt;
-mod tts;
 #[tokio::main]
 async fn main() -> Result<(), ApiError> {
     println!("Pelase enter api key");
@@ -36,9 +36,10 @@ async fn main() -> Result<(), ApiError> {
         let mut contents = Vec::new();
         file.read_to_end(&mut contents).await.unwrap();
 
-        let mut sst_request = stt::Request::new();
+        let mut sst_request = stt::Request::new(contents);
         // sst_request = sst_request.with_language("".to_string());
-        let text = get_text(contents, api_key, sst_request).await.unwrap();
+        sst_request = sst_request.with_response_format(stt::ResponseFormat::Text);
+        let text = get_text_from_voice(api_key, sst_request).await.unwrap();
         println!("From OpenAi :{}", text)
     }
 }

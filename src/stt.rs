@@ -1,4 +1,5 @@
 use crate::error::ApiError;
+use reqwest::{get, Response};
 use reqwest::{multipart, Client};
 use serde::Deserialize;
 use serde::Serialize;
@@ -12,9 +13,10 @@ pub struct Request {
     prompt: String,
     response_format: ResponseFormat,
     temperature: f32,
+    content: Vec<u8>,
 }
 #[derive(Deserialize)]
-pub struct Response {
+pub struct OpenAiResponse {
     pub text: String,
 }
 #[derive(Serialize, EnumString, Display, Debug)]
@@ -36,8 +38,9 @@ pub enum ResponseFormat {
     Vtt,
 }
 impl Request {
-    pub fn new() -> Request {
+    pub fn new(content: Vec<u8>) -> Request {
         Request {
+            content: content,
             model: String::from("whisper-1"),
             language: String::from("en"),
             prompt: String::from(""),
@@ -62,12 +65,8 @@ impl Request {
         self
     }
 }
-pub async fn get_text(
-    content: Vec<u8>,
-    api_key: &str,
-    req: Request,
-) -> Result<String, ApiError> {
-    let part = multipart::Part::stream(reqwest::Body::from(content))
+pub async fn get_text_from_voice(api_key: &str, req: Request) -> Result<String, ApiError> {
+    let part = multipart::Part::stream(reqwest::Body::from(req.content))
         .file_name("filename.mp3")
         .mime_str("audio/mpeg");
     if let Ok(part) = part {
@@ -88,9 +87,7 @@ pub async fn get_text(
         match response {
             Ok(response) => {
                 if response.status().is_success() {
-                    if let Ok(response_body) = response.json::<Response>().await {
-                        return Ok(response_body.text);
-                    }
+                    return Ok(get_response(req.response_format, response).await);
                 } else {
                     return Err(ApiError::Error(response.status().to_string()));
                 }
@@ -99,4 +96,28 @@ pub async fn get_text(
         }
     }
     Err(ApiError::Error(String::from("Unknown Error")))
+}
+async fn get_response(response_fromat: ResponseFormat, response: Response) -> String {
+    match response_fromat {
+        ResponseFormat::Json => {
+            if let Ok(response_body) = response.json::<OpenAiResponse>().await {
+                return response_body.text;
+            }
+            "".to_string()
+        }
+        ResponseFormat::Text => {
+            if let Ok(response_body) = response.text().await {
+                return response_body;
+            }
+            "".to_string()
+        }
+        ResponseFormat::Srt => {
+            if let Ok(response_body) = response.text().await {
+                return response_body;
+            }
+            "".to_string()
+        }
+        ResponseFormat::VerboseJson => todo!(),
+        ResponseFormat::Vtt => todo!(),
+    }
 }
