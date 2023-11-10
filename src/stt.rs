@@ -1,5 +1,5 @@
 use crate::error::ApiError;
-use reqwest::{get, Response};
+use reqwest::Response;
 use reqwest::{multipart, Client};
 use serde::Deserialize;
 use serde::Serialize;
