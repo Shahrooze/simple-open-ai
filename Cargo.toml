@@ -2,8 +2,11 @@
 name = "simple-open-ai"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["shahrooz.jefri@gmail.com"]
+description = "A simple library for using openai api." 
+license = "MIT" 
+repository = "https://github.com/Shahrooze/simple-open-ai" 
+keywords = ["openai", "ai"]
 
 [dependencies]
 dotenv = "0.15.0"

@@ -1,3 +1,41 @@
+/// Module `stt` - Handles speech-to-text conversion using an API service.
+/// 
+/// # Overview
+/// This module provides functionality to convert speech to text by communicating
+/// with an external API that processes audio data and returns transcriptions.
+/// 
+/// # Constants
+/// - `ENDPOINT`: The API endpoint for speech-to-text conversion service.
+/// 
+/// # Structures
+/// - `Request`: Represents an API request for STT conversion. Includes the audio
+///   data and parameters such as model, language, and format preferences.
+/// - `OpenAiResponse`: The expected response from the API, containing the
+///   transcribed text.
+/// 
+/// # Enums and Traits
+/// - `ResponseFormat`: (Assuming it's an enum, explanation would go here)
+/// 
+/// # Usage
+/// ```rust
+/// use crate::stt::{Request, OpenAiResponse};
+/// let audio_data = vec![/* ... audio data ... */];
+/// let request = Request {
+///     // ... initialization of request fields ...
+/// };
+/// 
+/// // Example of sending the request and handling the response
+/// let client = reqwest::Client::new();
+/// let response = async {
+///     client.post(ENDPOINT)
+///         .body(audio_data)
+///         .send()
+///         .await?
+///         .json::<OpenAiResponse>()
+///         .await
+/// };
+/// ```
+/// 
 use crate::error::ApiError;
 use reqwest::Response;
 use reqwest::{multipart, Client};

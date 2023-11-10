@@ -1,3 +1,32 @@
+
+/// Module `tts` - Handles Text-to-Speech (TTS) conversion using an API service.
+///
+/// # Overview
+/// This module provides functionality to convert text input to speech audio, 
+/// interfacing with an external TTS service API.
+///
+/// # Dependencies
+/// - `reqwest`: A high-level HTTP client for making requests.
+/// - `bytes`: Utilities for working with bytes.
+/// - `serde`: Serialization and deserialization framework, used here to serialize request data.
+///
+/// # Constants
+/// `ENDPOINT`: The API endpoint for the TTS service.
+///
+/// # Structures
+/// `Request`: Represents a TTS API request with parameters for the speech model, input text, voice settings, 
+/// and desired response format.
+///
+/// # Enums
+/// `ResponseFormat`: Enumerates the possible audio formats for the TTS response, including MP3, Opus, AAC, and FLAC.
+///
+/// # Error Handling
+/// Utilizes `ApiError` from `crate::error` for consistent error management across the application.
+///
+/// # Examples
+/// Example usage not provided due to lack of complete context in the snippet.
+///
+/// Note: Examples and detailed error handling require a complete understanding of the module's usage patterns.
 use crate::error::ApiError;
 use bytes::Bytes;
 use reqwest::Client;
