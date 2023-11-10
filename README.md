@@ -22,5 +22,4 @@ Add the following to your `Cargo.toml` file to include this library in your Rust
 
 ```toml
 [dependencies]
-
-[![Rust](https://github.com/Shahrooze/simple-open-ai/actions/workflows/rust.yml/badge.svg)](https://github.com/Shahrooze/simple-open-ai/actions/workflows/rust.yml)
+simple-open-ai = "0.1.0"
